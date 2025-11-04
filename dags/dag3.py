@@ -21,8 +21,8 @@ default_args = { #per file
 def waterinfo_etl(): #Class
     @task
     def fetch_river_stage_2D():
-        vmm = Waterinfo("vmm", cache=True)
-        hic = Waterinfo("hic", cache=True)
+        vmm = Waterinfo("vmm", cache=False)
+        hic = Waterinfo("hic", cache=False)
         Gent_Terneuzen_River_Stage = hic.get_timeseries_values("98536010",period='P2D')
         Gent_Terneuzen_River_Stage["Timestamp"] = Gent_Terneuzen_River_Stage["Timestamp"].dt.tz_localize(None)
         Gent_Terneuzen_River_Stage["Timestamp"] = Gent_Terneuzen_River_Stage["Timestamp"].dt.strftime("%Y-%m-%dT%H:%M:%S")
@@ -30,7 +30,7 @@ def waterinfo_etl(): #Class
 
     @task
     def fetch_river_stage_30M():
-        hic = Waterinfo("hic", cache=True)
+        hic = Waterinfo("hic", cache=False)
         Gent_Terneuzen_River_Stage_30_min = hic.get_timeseries_values("98536010",period='PT30M')
         Gent_Terneuzen_River_Stage_30_min["Timestamp"] = Gent_Terneuzen_River_Stage_30_min["Timestamp"].dt.tz_localize(None)
         Gent_Terneuzen_River_Stage_30_min["Timestamp"] = Gent_Terneuzen_River_Stage_30_min["Timestamp"].dt.strftime("%Y-%m-%dT%H:%M:%S")
