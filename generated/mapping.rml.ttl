@@ -1,0 +1,64 @@
+@base <http://example.com/> .
+@prefix rr:  <http://www.w3.org/ns/r2rml#> .
+@prefix rml: <http://semweb.mmlab.be/ns/rml#> .
+@prefix ql:  <http://semweb.mmlab.be/ns/ql#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix ssn: <http://www.w3.org/ns/ssn/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ex:  <http://example.com/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfc: <https://w3id.org/rdf-connect#> .
+
+<#SensorMapping> a rr:TriplesMap;
+  rml:logicalSource [
+    rml:source "Gent_Terneuzen_River_Stage_combined.csv";
+    rml:referenceFormulation ql:CSV
+  ];
+
+  rr:subjectMap [
+        rr:termType rr:BlankNode ;
+  ];
+
+      rr:predicateObjectMap [
+        rr:predicate rdf:type ;               # Predicate is rdf:type (a)
+        rr:objectMap  [
+          rr:constant  sosa:Observation
+            ]           # Object is sosa:Observation
+    ];
+
+  rr:predicateObjectMap [
+    rr:predicate ex:id ;
+    rr:objectMap [
+      rml:reference "ts_id";
+      rr:datatype xsd:int
+      ]
+    ];
+  
+   # sosa:hasSimpleResult → Value (xsd:double)
+  rr:predicateObjectMap [
+    rr:predicate sosa:hasSimpleResult ;
+    rr:objectMap [
+      rml:reference "Value" ;
+      rr:template "{Value}" ;
+      rr:datatype xsd:double
+    ]
+  ] ;
+
+  # sosa:observedProperty → stationparameter_longname
+  rr:predicateObjectMap [
+    rr:predicate sosa:observedProperty ;
+    rr:objectMap [ rml:reference "stationparameter_longname" ]
+  ] ;
+
+  # sosa:resultTime → Timestamp (xsd:dateTime)
+  rr:predicateObjectMap [
+    rr:predicate sosa:resultTime ;
+    rr:objectMap [
+      rml:reference "Timestamp" ;
+      rr:datatype xsd:dateTime
+    ]
+  ] 
+  .
+    
+    
