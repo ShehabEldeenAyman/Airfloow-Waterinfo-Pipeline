@@ -25,25 +25,22 @@ default_args = { #per file
 )
 
 def prettify():
-    @task
-    def LoadGraph(directory):
-        graph = Graph()
-        print("Started loading graph...")
-        graph.parse(directory, format="turtle",publicID="https://example.org/")
-        print("Graph loaded successfully.")
-        return graph
-    
-    @task
-    def SaveGraph(directory, final_graph):
-        print('Started writing file to disk')
-        final_graph.serialize(destination=directory, format="turtle")
-        print('File written successfully')
 
-################################################################################
+    @task
+    def load_and_prettify(input_path: str, output_path: str) -> str:
+        """Load an RDF file and immediately write the prettified version to disk."""
+        print("Started loading RDF graph...")
+        g = Graph()
+        g.parse(input_path, format="turtle", publicID="https://example.org/")
+        print("Graph loaded successfully. Serializing...")
+        g.serialize(destination=output_path, format="turtle")
+        print(f"Prettified file written to: {output_path}")
+        return output_path  # return only the file path (string), not the Graph object
 
     input_path = "/opt/airflow/generated/rdf.ttl"
     output_path = "/opt/airflow/generated/rdf_prettified.ttl"
-    Original_graph  = LoadGraph(input_path)
-    SaveGraph(output_path,Original_graph)
+
+    load_and_prettify(input_path, output_path)
+
 prettify_dag = prettify()
     
